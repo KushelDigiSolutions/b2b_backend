@@ -5,31 +5,50 @@ const mySchema = mongoose.Schema({
     email: String,
     phone: String,
     password: String,
+    categoryies:String,
+    confirmPassword: String,
     role: String,
     status: {
         type: String,
         default: "true"
     },
-    designation: {
+    website: {
         type: String,
         default: ""
     },
-    bio: {
+    budget: {
         type: String,
         default: ""
     },
-    country: {
+    location: {
         type: String,
         default: ""
     },
-    state: {
-        type: String,
+    aboutCompany:{
+        type:String,
         default: ""
+    },
+    twiter:{
+        type:String,
+        default: "" 
+    },
+    facebook:{
+        type:String,
+        default: ""  
+    },
+    linkdin:{
+        type:String,
+        default: ""  
+    },
+    insta:{
+        type:String,
+        default: ""  
     },
     img: {
         type: Object,
         default: {}
     },
+    
 }, { timestamps: true });
 
 const User = mongoose.model('User', mySchema);

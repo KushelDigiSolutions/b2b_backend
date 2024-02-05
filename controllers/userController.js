@@ -36,7 +36,7 @@ const getUsers = async ({ id, query, page, perPage }) => {
 };
 
 // const signin = async ({ name, email, phone, password }) => {
-const signin = async ({ name, email, password }) => {
+const signin = async ({ name, email, password,confirmPassword, categoryies}) => {
     const checkUser = await User.findOne({ email });
     // const checkUser1 = await User.findOne({ phone });
 
@@ -45,12 +45,20 @@ const signin = async ({ name, email, password }) => {
         return { status: false, message: 'User already exists' };
     }
 
+    if(password !== confirmPassword){
+    //    window.alert("password and confirmPassword must be same")
+        return { status: false, message: 'password and confirm password must be same' };
+    }
+
     const pass = await bcrypt.hash(password, 10);
+    const confirmPass = await bcrypt.hash(confirmPassword, 10);
     const newUser = new User({
         name,
         email,
         // phone,
         password: pass,
+        categoryies,
+        confirmPassword: confirmPass,
         role: 'USER'
     });
     const saveUser = await newUser.save();
@@ -62,15 +70,15 @@ const login = async ({ email, password }) => {
     if (!emailCheck) {
         return { status: false, message: "Invalid Credentials" };
     }
-    // const passwordVerify = await bcrypt.compare(password, emailCheck.password);
-    // if (!passwordVerify) {
-    //     return { status: false, message: "Invalid Credentials" };
-    // }
+    const passwordVerify = await bcrypt.compare(password, emailCheck.password);
+    if (!passwordVerify) {
+        return { status: false, message: "Invalid Credentials" };
+    }
     let token = jwt.sign({ _id: emailCheck._id }, process.env.SK);
     return { status: true, message: "Login success", token, user: emailCheck };
 };
 
-const updateUser = async ({ userId, name, email, designation, bio, country, state, file, auth, password }) => {
+const updateUser = async ({ userId, name, email, phone,categoryies, website, budget,location, aboutCompany, file, auth,twiter,facebook,linkdin,insta }) => {
     // if (!auth) {
     //     return { success: false, message: "Not Authorised" };
     // }
@@ -81,7 +89,7 @@ const updateUser = async ({ userId, name, email, designation, bio, country, stat
             return { status: false, data: ans, message: 'Email already taken' };
         }
     }
-    let updateObj = removeUndefined({ name, email, designation, bio, country, state });
+    let updateObj = removeUndefined({ name, email,phone,categoryies, website, budget,location, aboutCompany,twiter,facebook,linkdin,insta});
 
     if (file && file !== "") {
         var result = await uploadToCloudinary(file.path);
@@ -91,12 +99,23 @@ const updateUser = async ({ userId, name, email, designation, bio, country, stat
         };
     }
 
-    if (password && password !== "undefined" && password !== "") {
-        password = await bcrypt.hash(password, 3);
-        updateObj['password'] = password;
-    }
+    // if (password && password !== "undefined" && password !== "") {
+    //     password = await bcrypt.hash(password, 3);
+    //     updateObj['password'] = password;
+    // }
     let ans = await User.findByIdAndUpdate(userId, { $set: updateObj }, { new: true });
     return { status: true, data: ans, message: 'User Updated Successfull' };
+};
+
+const deleteUser = async ({ id }) => {
+    const ans = await User.findByIdAndDelete(id);
+    return { status: true, data: ans };
+
+};
+
+const deleteUsers = async () => {
+    const ans = await User.deleteMany();
+    return { status: true, data: ans };
 };
 
 const generateOtp = () => {
@@ -217,6 +236,8 @@ module.exports = {
     signin,
     login,
     updateUser,
+    deleteUser,
+    deleteUsers,
     sendOtp,
     submitOtp,
     changePassword,
