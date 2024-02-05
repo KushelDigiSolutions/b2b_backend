@@ -37,7 +37,7 @@ router.put('/updateUser/:userId', auth, upload, async (req, res) => {
         if (!data.status) {
             return res.status(400).json(data);
         }
-        res.json(data);
+       return res.json(data);
     } 
     
     catch (error) {

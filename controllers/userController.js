@@ -78,34 +78,82 @@ const login = async ({ email, password }) => {
     return { status: true, message: "Login success", token, user: emailCheck };
 };
 
-const updateUser = async ({ userId, name, email, phone,categoryies, website, budget,location, aboutCompany, file, auth,twiter,facebook,linkdin,insta }) => {
-    // if (!auth) {
-    //     return { success: false, message: "Not Authorised" };
-    // }
+// const updateUser = async ({ userId, name, email, phone,categoryies, website, budget,location, aboutCompany, file, auth,twiter,facebook,linkdin,insta }) => {
+//     // if (!auth) {
+//     //     return { success: false, message: "Not Authorised" };
+//     // }
 
-    if (auth.email !== email) {
-        let checkUser = User.findOne({ email });
-        if (checkUser) {
-            return { status: false, data: ans, message: 'Email already taken' };
+//     console.log("email" ,email);
+
+
+//     // if (auth?.email !== email) {
+//         let checkUser = User.findOne({ email:email });
+//         console.log("checkuser" , checkUser);
+//         // if (checkUser) {
+//         //     return { status: false, data: ans, message: 'Email already taken' };
+//         // }
+//     // }
+//     let updateObj = User({ name, email,phone,categoryies, website, budget,location, aboutCompany,twiter,facebook,linkdin,insta});
+
+//     if (file && file !== "") {
+//         var result = await uploadToCloudinary(file.path);
+//         updateObj['img'] = {
+//             url: result.url,
+//             id: result.public_id
+//         };
+//     }
+
+//     // if (password && password !== "undefined" && password !== "") {
+//     //     password = await bcrypt.hash(password, 3);
+//     //     updateObj['password'] = password;
+//     // }
+//     let ans = await User.findByIdAndUpdate(userId, { $set: updateObj }, { new: true });
+//     return { status: true, data: ans, message: 'User Updated Successfull' };
+// };
+
+const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta }) => {
+    try {
+        // Check if the email is already taken by another user
+        const checkUser = await User.findOne({ email: email });
+        if (checkUser && checkUser._id != userId) {
+            return { status: false, data: null, message: 'Email already taken' };
         }
-    }
-    let updateObj = removeUndefined({ name, email,phone,categoryies, website, budget,location, aboutCompany,twiter,facebook,linkdin,insta});
 
-    if (file && file !== "") {
-        var result = await uploadToCloudinary(file.path);
-        updateObj['img'] = {
-            url: result.url,
-            id: result.public_id
+        // Prepare the update object
+        let updateObj = {
+            name,
+            email,
+            phone,
+            categoryies,
+            website,
+            budget,
+            location,
+            aboutCompany,
+            twiter,
+            facebook,
+            linkdin,
+            insta
         };
-    }
 
-    // if (password && password !== "undefined" && password !== "") {
-    //     password = await bcrypt.hash(password, 3);
-    //     updateObj['password'] = password;
-    // }
-    let ans = await User.findByIdAndUpdate(userId, { $set: updateObj }, { new: true });
-    return { status: true, data: ans, message: 'User Updated Successfull' };
+        // Upload file to Cloudinary and update img field if file is provided
+        if (file && file !== "") {
+            const result = await uploadToCloudinary(file.path);
+            updateObj['img'] = {
+                url: result.url,
+                id: result.public_id
+            };
+        }
+
+        // Update the user without modifying the _id field
+        const ans = await User.findByIdAndUpdate(userId, { $set: updateObj }, { new: true, omitUndefined: true });
+
+        return { status: true, data: ans, message: 'User Updated Successfully' };
+    } catch (error) {
+        console.error('Error updating user:', error);
+        return { status: false, data: null, message: 'Error updating user' };
+    }
 };
+
 
 const deleteUser = async ({ id }) => {
     const ans = await User.findByIdAndDelete(id);
