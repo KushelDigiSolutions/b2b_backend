@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const nodemailer = require("nodemailer");
 const verify = async ({ auth }) => {
     if (!auth) {
         return { status: false };
@@ -22,21 +22,20 @@ const getUsers = async ({ id, query, page, perPage }) => {
         and.push({});
     }
 
-    const count=await User.count({ $and: and });
+    const count = await User.count({ $and: and });
 
     let data;
     if (page && page !== "" && page !== "undefined") {
-        data = await User.find({ $and: and }).skip((page-1)*perPage).limit(perPage);
+        data = await User.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
     }
-    else
-    {
+    else {
         data = await User.find({ $and: and });
     }
     return { status: true, data, count };
 };
 
 // const signin = async ({ name, email, phone, password }) => {
-const signin = async ({ name, email, password,confirmPassword, categoryies}) => {
+const signin = async ({ name, email, password, confirmPassword, categoryies }) => {
     const checkUser = await User.findOne({ email });
     // const checkUser1 = await User.findOne({ phone });
 
@@ -45,8 +44,8 @@ const signin = async ({ name, email, password,confirmPassword, categoryies}) => 
         return { status: false, message: 'User already exists' };
     }
 
-    if(password !== confirmPassword){
-    //    window.alert("password and confirmPassword must be same")
+    if (password !== confirmPassword) {
+        //    window.alert("password and confirmPassword must be same")
         return { status: false, message: 'password and confirm password must be same' };
     }
 
@@ -179,12 +178,12 @@ const sendOtp = async ({ email }) => {
     let otp = generateOtp();
     // Create a SMTP transport object
     let transporter = nodemailer.createTransport({
-        host: "mail.kusheldigi.com",
+        host: "smtp.gmail.com",
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "info@kusheldigi.com",
-            pass: "Kusheldigiinfo@2025",
+            user: "webmaster.kushel@gmail.com",
+            pass: "paurymswxlpytekp",
         },
         from: "info@kusheldigi.com",
         tls: {
@@ -220,10 +219,12 @@ const sendOtp = async ({ email }) => {
 };
 
 const submitOtp = async ({ otp, otp1 }) => {
+    console.log(otp,otp1);
     if (otp.toString() !== otp1.toString()) {
+
         return { status: false, message: "Invalid Otp" };
     }
-
+    console.log(otp,otp1);
     return { status: true, message: "Success" };
 };
 
@@ -240,12 +241,12 @@ const resetPassword = async ({ password, userId }) => {
     console.log(user);
     // Create a SMTP transport object
     let transporter = nodemailer.createTransport({
-        host: "mail.kusheldigi.com",
+        host: "smtp.gmail.com",
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "info@kusheldigi.com",
-            pass: "Kusheldigiinfo@2025",
+            user: "webmaster.kushel@gmail.com",
+            pass: "paurymswxlpytekp",
         },
         from: "info@kusheldigi.com",
         tls: {
