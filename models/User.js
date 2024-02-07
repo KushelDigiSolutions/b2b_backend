@@ -24,6 +24,10 @@ const mySchema = mongoose.Schema({
         type: String,
         default: ""
     },
+   city:{
+    type:String,
+    default:""
+   },
     aboutCompany:{
         type:String,
         default: ""

@@ -110,7 +110,7 @@ const login = async ({ email, password }) => {
 //     return { status: true, data: ans, message: 'User Updated Successfull' };
 // };
 
-const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta }) => {
+const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta,city }) => {
     try {
         // Check if the email is already taken by another user
         const checkUser = await User.findOne({ email: email });
@@ -131,7 +131,8 @@ const updateUser = async ({ userId, name, email, phone, categoryies, website, bu
             twiter,
             facebook,
             linkdin,
-            insta
+            insta,
+            city
         };
 
         // Upload file to Cloudinary and update img field if file is provided
