@@ -94,9 +94,9 @@ router.put('/resetPassword/:userId', async (req, res) => {
     res.json(data);
 });
 
-router.delete('/deleteUserImage/:id', auth, async (req, res) => {
+router.delete('/deleteUserImage/:id/:userId', auth, async (req, res) => {
     try {
-        let data = await deleteUserImage({ auth: req.user, id: req.params.id });
+        let data = await deleteUserImage({ auth: req.user, id: req.params.id , userId: req.params.userId});
         if (!data.status) {
             return res.status(400).json(data);
         }

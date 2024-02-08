@@ -2,6 +2,10 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
+const {  uploadToCloudinary } = require("../util/util");
+const cloudinary = require("cloudinary").v2;
+
+
 const verify = async ({ auth }) => {
     if (!auth) {
         return { status: false };
@@ -112,6 +116,8 @@ const login = async ({ email, password }) => {
 
 const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta,city }) => {
     try {
+
+        console.log("file" ,file);
         // Check if the email is already taken by another user
         const checkUser = await User.findOne({ email: email });
         if (checkUser && checkUser._id != userId) {
@@ -280,15 +286,20 @@ const resetPassword = async ({ password, userId }) => {
     return { status: true, message: "Password reset success" };
 };
 
-const deleteUserImage = async ({id}) =>{
+const deleteUserImage = async ({id  ,userId}) =>{
     id = id.replaceAll(':', '/');
+
+    // const checkUser = await User.findOne({ email: email });
 
     cloudinary.uploader.destroy(id, async (err, result) => {
         console.log(result);
         if (err) throw err;
     });
 
-    return { status: true, message: 'User image deleted successfully' };
+    const ans = await User.findByIdAndUpdate(userId, { $set: { img: {} } }, { new: true });
+
+
+    return { status: true, message: 'User image deleted successfully' ,data: ans };
 }
 
 module.exports = {
