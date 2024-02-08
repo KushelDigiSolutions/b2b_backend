@@ -280,6 +280,17 @@ const resetPassword = async ({ password, userId }) => {
     return { status: true, message: "Password reset success" };
 };
 
+const deleteUserImage = async ({id}) =>{
+    id = id.replaceAll(':', '/');
+
+    cloudinary.uploader.destroy(id, async (err, result) => {
+        console.log(result);
+        if (err) throw err;
+    });
+
+    return { status: true, message: 'User image deleted successfully' };
+}
+
 module.exports = {
     verify,
     getUsers,
@@ -291,5 +302,6 @@ module.exports = {
     sendOtp,
     submitOtp,
     changePassword,
-    resetPassword
+    resetPassword,
+    deleteUserImage
 }
