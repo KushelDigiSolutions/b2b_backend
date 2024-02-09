@@ -3,32 +3,34 @@ const { removeUndefined, uploadToCloudinary } = require("../util/util");
 const cloudinary = require("cloudinary").v2;
 
 const getProjects = async ({ id, query, page, perPage }) => {
-    let and = [];
+    // let and = [];
 
-    if (id && id !== "" && id !== "undefined") {
-        and.push({ _id: id });
-    }
+    // if (id && id !== "" && id !== "undefined") {
+    //     and.push({ _id: id });
+    // }
 
-    if (query && query !== "" && query !== "undefined") {
-        console.log(query);
-        and.push({ title: { $regex: query, $options: "i" } });
-    }
+    // if (query && query !== "" && query !== "undefined") {
+    //     console.log(query);
+    //     and.push({ title: { $regex: query, $options: "i" } });
+    // }
 
-    if (and.length === 0) {
-        and.push({});
-    }
-    const count = await Project.count({ $and: and });
-    let data;
+    // if (and.length === 0) {
+    //     and.push({});
+    // }
+    // const count = await Project.count({ $and: and });
+    // let data;
 
-    if (page && page !== "" && page !== "undefined") {
-        data = await Project.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
-    }
-    else
-    {
-        data = await Project.find({ $and: and });
-    }
+    // if (page && page !== "" && page !== "undefined") {
+    //     data = await Project.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
+    // }
     
-    return { status: true, data, count };
+    
+        // data = await Project.find({ $and: and });
+        let data = await Project.find()
+    
+    
+    // return { status: true, data, count };
+    return { status: true, data};
 };
 
 const postProject = async ({ title, location, file, desc, defaultImg, auth }) => {
