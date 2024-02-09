@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const mySchema = mongoose.Schema({
+const mySchema =new mongoose.Schema({
     name: String,
     email: String,
     phone: String,
@@ -8,6 +8,10 @@ const mySchema = mongoose.Schema({
     categoryies:String,
     confirmPassword: String,
     role: String,
+    project:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Project",
+    }],
     status: {
         type: String,
         default: "true"
