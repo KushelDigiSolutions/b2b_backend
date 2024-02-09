@@ -1,9 +1,10 @@
 const Project = require("../models/Project");
+const User = require("../models/User");
 const { removeUndefined, uploadToCloudinary } = require("../util/util");
 const cloudinary = require("cloudinary").v2;
+const mongoose=require('mongoose');
 
-const getProjects = async ({ id, query, page, perPage }) => {
-    // let and = [];
+ // let and = [];
 
     // if (id && id !== "" && id !== "undefined") {
     //     and.push({ _id: id });
@@ -26,24 +27,31 @@ const getProjects = async ({ id, query, page, perPage }) => {
     
     
         // data = await Project.find({ $and: and });
-        let data = await Project.find()
-    
-    
-    // return { status: true, data, count };
-    return { status: true, data};
+
+const getProjects = async ({ id}) => {
+try{
+        
+    const data = await User.findById(id).populate("project").exec();
+
+        return { status: true, data};
+} catch(error){
+    console.log("error" ,error);
+}
 };
 
-const postProject = async ({ title, location, file, desc, defaultImg, auth }) => {
+const postProject = async ({id , title, location, file, desc, defaultImg, auth }) => {
     // if(!auth || auth.role!=='ADMIN')
     // {
     //     return { status: false, message: "Not Authorised" };
     // }
-
     if (defaultImg || defaultImg === "true") {
         const newProject = new Project({
             title, defaultImg, img: [], desc, location, ts: new Date().getTime(), status: true, createdBy: auth
         });
         const saveProject = await newProject.save();
+
+        // Update user's project field with the new project's ID
+        await User.findByIdAndUpdate(id, { $push: { project: saveProject._id } });
 
         return { status: true, message: 'New Project created', data: saveProject };
     }
@@ -53,9 +61,13 @@ const postProject = async ({ title, location, file, desc, defaultImg, auth }) =>
         });
         const saveProject = await newProject.save();
 
+        // Update user's project field with the new project's ID
+        await User.findByIdAndUpdate(id, { $push: { project: saveProject._id } });
+
         return { status: true, message: 'New Project created', data: saveProject };
     }
 };
+
 
 const uploadImage = async ({ file }) => {
     // if(!auth || auth.role!=='ADMIN')

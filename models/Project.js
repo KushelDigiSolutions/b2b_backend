@@ -15,7 +15,8 @@ const mySchema = mongoose.Schema({
     isFavorite: {
         type: String,
         default: "false"
-    }
+    },
+  
 }, { timestamps: true });
 
 const Project = mongoose.model('Project', mySchema);

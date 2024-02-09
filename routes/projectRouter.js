@@ -5,13 +5,13 @@ const { upload, multiUpload } = require('../util/util');
 const { updateUserStatus } = require('../controllers/userController');
 const router = express.Router();
 
-router.get('/getProjects', async (req, res) => {
-    const data = await getProjects({ ...req.query });
+router.get('/getProjects/:id',auth , async (req, res) => {
+    const data = await getProjects({auth: req.user, id: req.params.id  });
     res.json(data);
 });
 
-router.post('/postProject', auth, async (req, res) => {
-    const data = await postProject({ ...req.body, auth: req.user });
+router.post('/postProject/:id', auth, async (req, res) => {
+    const data = await postProject({ ...req.body, auth: req.user , id: req.params.id  });
     if (!data.status) {
         return res.status(400).json(data);
     }
