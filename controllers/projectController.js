@@ -31,7 +31,7 @@ const getProjects = async ({ id, query, page, perPage }) => {
     return { status: true, data, count };
 };
 
-const postProject = async ({ title, file, desc, defaultImg, auth }) => {
+const postProject = async ({ title, location, file, desc, defaultImg, auth }) => {
     // if(!auth || auth.role!=='ADMIN')
     // {
     //     return { status: false, message: "Not Authorised" };
@@ -39,7 +39,7 @@ const postProject = async ({ title, file, desc, defaultImg, auth }) => {
 
     if (defaultImg || defaultImg === "true") {
         const newProject = new Project({
-            title, defaultImg, img: [], desc, ts: new Date().getTime(), status: true, createdBy: auth
+            title, defaultImg, img: [], desc, location, ts: new Date().getTime(), status: true, createdBy: auth
         });
         const saveProject = await newProject.save();
 
@@ -47,7 +47,7 @@ const postProject = async ({ title, file, desc, defaultImg, auth }) => {
     }
     else {
         const newProject = new Project({
-            title, defaultImg, img: file, desc, ts: new Date().getTime(), status: true, createdBy: auth
+            title, defaultImg, img: file, desc, location, ts: new Date().getTime(), status: true, createdBy: auth
         });
         const saveProject = await newProject.save();
 
