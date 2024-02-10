@@ -4,6 +4,7 @@ const { removeUndefined, uploadToCloudinary } = require("../util/util");
 const cloudinary = require("cloudinary").v2;
 const mongoose=require('mongoose');
 
+
  // let and = [];
 
     // if (id && id !== "" && id !== "undefined") {
@@ -39,32 +40,43 @@ try{
 }
 };
 
-const postProject = async ({id , title, location, file, desc, defaultImg, auth }) => {
+const postProject = async ({id , title, location, file, desc, defaultImg, auth  , bidDate , startDate , stage , buildingUse , value ,sector }) => {
     // if(!auth || auth.role!=='ADMIN')
     // {
     //     return { status: false, message: "Not Authorised" };
     // }
-    if (defaultImg || defaultImg === "true") {
-        const newProject = new Project({
-            title, defaultImg, img: [], desc, location, ts: new Date().getTime(), status: true, createdBy: auth
-        });
-        const saveProject = await newProject.save();
+    try{
 
-        // Update user's project field with the new project's ID
-        await User.findByIdAndUpdate(id, { $push: { project: saveProject._id } });
+    
+        if (defaultImg || defaultImg === "true") {
 
-        return { status: true, message: 'New Project created', data: saveProject };
-    }
-    else {
-        const newProject = new Project({
-            title, defaultImg, img: file, desc, location, ts: new Date().getTime(), status: true, createdBy: auth
-        });
-        const saveProject = await newProject.save();
-
-        // Update user's project field with the new project's ID
-        await User.findByIdAndUpdate(id, { $push: { project: saveProject._id } });
-
-        return { status: true, message: 'New Project created', data: saveProject };
+            const newProject = new Project({
+                title, defaultImg, img: [], desc ,bidDate , startDate , stage , buildingUse , value , sector , location, ts: new Date().getTime(), status: true, createdBy: auth
+            });
+            const saveProject = await newProject.save();
+    
+            // Update user's project field with the new project's ID
+            await User.findByIdAndUpdate(id, { $push: { project: saveProject._id } });
+    
+            return { status: true, message: 'New Project created', data: saveProject };
+        }
+        else {
+            const newProject = new Project({
+                title, defaultImg, img: file, desc, bidDate , startDate , stage , buildingUse , value , sector , location, ts: new Date().getTime(), status: true, createdBy: auth
+            });
+            const saveProject = await newProject.save();
+    
+            // Update user's project field with the new project's ID
+            await User.findByIdAndUpdate(id, { $push: { project: saveProject._id } });
+    
+            return { status: true, message: 'New Project created', data: saveProject };
+        }
+    } catch(error){
+        console.log(error);
+        return {
+            status:false , 
+            message:"500"
+        }
     }
 };
 
