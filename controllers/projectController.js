@@ -40,6 +40,11 @@ try{
 }
 };
 
+const getProjects1 = async () =>{
+    const data = await Project.find();
+    return {status:true, data}
+}
+
 const postProject = async ({id , title, location, file, desc, defaultImg, auth  , bidDate , startDate , stage , buildingUse , Value ,sector }) => {
     // if(!auth || auth.role!=='ADMIN')
     // {
@@ -183,5 +188,6 @@ module.exports = {
     updateProjectStatus,
     deleteAllProjects,
     deleteProject,
-    deleteProjectImage
+    deleteProjectImage,
+    getProjects1
 };

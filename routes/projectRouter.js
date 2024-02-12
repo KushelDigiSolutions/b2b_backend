@@ -1,5 +1,5 @@
 const express = require('express');
-const { getProjects, postProject, uploadImage, updateProject, updateProjectStatus, deleteProjectImage, deleteProject, deleteAllProjects } = require('../controllers/projectController');
+const { getProjects, postProject, uploadImage, updateProject, updateProjectStatus, deleteProjectImage, deleteProject, deleteAllProjects,getProjects1 } = require('../controllers/projectController');
 const auth = require('../middleware/auth');
 const { upload, multiUpload } = require('../util/util');
 const { updateUserStatus } = require('../controllers/userController');
@@ -7,6 +7,11 @@ const router = express.Router();
 
 router.get('/getProjects/:id',auth , async (req, res) => {
     const data = await getProjects({auth: req.user, id: req.params.id  });
+    res.json(data);
+});
+
+router.get('/getProjects1', async (req, res) => {
+    const data = await getProjects1({ ...req.query });
     res.json(data);
 });
 

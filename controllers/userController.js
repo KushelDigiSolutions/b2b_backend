@@ -2,7 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
-const {  uploadToCloudinary } = require("../util/util");
+const { uploadToCloudinary } = require("../util/util");
 const cloudinary = require("cloudinary").v2;
 
 
@@ -14,28 +14,30 @@ const verify = async ({ auth }) => {
 };
 
 const getUsers = async ({ id, query, page, perPage }) => {
-    let and = [];
-    if (id && id !== "" && id !== "undefined") {
-        and.push({ _id: id });
-    }
-    if (query && query !== "" && query !== "undefined") {
-        console.log(query);
-        and.push({ name: { $regex: query, $options: "i" } });
-    }
-    if (and.length === 0) {
-        and.push({});
-    }
+    // let and = [];
+    // if (id && id !== "" && id !== "undefined") {
+    //     and.push({ _id: id });
+    // }
+    // if (query && query !== "" && query !== "undefined") {
+    //     console.log(query);
+    //     and.push({ name: { $regex: query, $options: "i" } });
+    // }
+    // if (and.length === 0) {
+    //     and.push({});
+    // }
 
-    const count = await User.count({ $and: and });
+    // const count = await User.count({ $and: and });
 
-    let data;
-    if (page && page !== "" && page !== "undefined") {
-        data = await User.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
-    }
-    else {
-        data = await User.find({ $and: and });
-    }
-    return { status: true, data, count };
+    // let data;
+    // if (page && page !== "" && page !== "undefined") {
+    //     data = await User.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
+    // }
+    
+        // data = await User.find({ $and: and });
+         data = await User.find();
+    
+    // return { status: true, data, count };
+    return { status: true, data };
 };
 
 // const signin = async ({ name, email, phone, password }) => {
@@ -114,10 +116,10 @@ const login = async ({ email, password }) => {
 //     return { status: true, data: ans, message: 'User Updated Successfull' };
 // };
 
-const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta,city }) => {
+const updateUser = async ({ userId, name, email, phone, categoryies, website, budget, location, aboutCompany, file, auth, twiter, facebook, linkdin, insta, city }) => {
     try {
 
-        console.log("file" ,file);
+        console.log("file", file);
         // Check if the email is already taken by another user
         const checkUser = await User.findOne({ email: email });
         if (checkUser && checkUser._id != userId) {
@@ -226,12 +228,12 @@ const sendOtp = async ({ email }) => {
 };
 
 const submitOtp = async ({ otp, otp1 }) => {
-    console.log(otp,otp1);
+    console.log(otp, otp1);
     if (otp.toString() !== otp1.toString()) {
 
         return { status: false, message: "Invalid Otp" };
     }
-    console.log(otp,otp1);
+    console.log(otp, otp1);
     return { status: true, message: "Success" };
 };
 
@@ -286,7 +288,7 @@ const resetPassword = async ({ password, userId }) => {
     return { status: true, message: "Password reset success" };
 };
 
-const deleteUserImage = async ({id  ,userId}) =>{
+const deleteUserImage = async ({ id, userId }) => {
     id = id.replaceAll(':', '/');
 
     // const checkUser = await User.findOne({ email: email });
@@ -299,19 +301,20 @@ const deleteUserImage = async ({id  ,userId}) =>{
     const ans = await User.findByIdAndUpdate(userId, { $set: { img: {} } }, { new: true });
 
 
-    return { status: true, message: 'User image deleted successfully' ,data: ans };
+    return { status: true, message: 'User image deleted successfully', data: ans };
 }
 
-const getUserByCategories = async({category})=>{
+const getUserByCategories = async ({ category }) => {
 
-try{
+    try {
 
-    const users = await User.find({ categoryies: category }).exec();
+        const users = await User.find({ categoryies: category }).exec();
 
-      return { status: true, message: 'Users retrieved successfully', data: users };
+        return { status: true, message: 'Users retrieved successfully', data: users };
 
-} catch(error){
-    return { status: false, message: "Internal server error" };}
+    } catch (error) {
+        return { status: false, message: "Internal server error" };
+    }
 }
 
 module.exports = {
@@ -319,7 +322,7 @@ module.exports = {
     getUsers,
     signin,
     login,
-    getUserByCategories ,
+    getUserByCategories,
     updateUser,
     deleteUser,
     deleteUsers,
