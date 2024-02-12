@@ -27,6 +27,8 @@ router.post('/uploadImage', multiUpload, auth, async (req, res) => {
 });
 
 router.put('/updateProject/:id', auth, async (req, res) => {
+
+    
     try {
         let data = await updateProject({ ...req.body, auth: req.user, id: req.params.id });
         if (!data.status) {

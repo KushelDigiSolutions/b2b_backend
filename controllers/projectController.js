@@ -40,7 +40,7 @@ try{
 }
 };
 
-const postProject = async ({id , title, location, file, desc, defaultImg, auth  , bidDate , startDate , stage , buildingUse , value ,sector }) => {
+const postProject = async ({id , title, location, file, desc, defaultImg, auth  , bidDate , startDate , stage , buildingUse , Value ,sector }) => {
     // if(!auth || auth.role!=='ADMIN')
     // {
     //     return { status: false, message: "Not Authorised" };
@@ -51,7 +51,7 @@ const postProject = async ({id , title, location, file, desc, defaultImg, auth  
         if (defaultImg || defaultImg === "true") {
 
             const newProject = new Project({
-                title, defaultImg, img: [], desc ,bidDate , startDate , stage , buildingUse , value , sector , location, ts: new Date().getTime(), status: true, createdBy: auth
+                title, defaultImg, img: [], desc ,bidDate , startDate , stage , buildingUse , value:Value , sector , location, ts: new Date().getTime(), status: true, createdBy: auth
             });
             const saveProject = await newProject.save();
     
@@ -62,7 +62,7 @@ const postProject = async ({id , title, location, file, desc, defaultImg, auth  
         }
         else {
             const newProject = new Project({
-                title, defaultImg, img: file, desc, bidDate , startDate , stage , buildingUse , value , sector , location, ts: new Date().getTime(), status: true, createdBy: auth
+                title, defaultImg, img: file, desc, bidDate , startDate , stage , buildingUse , value:Value , sector , location, ts: new Date().getTime(), status: true, createdBy: auth
             });
             const saveProject = await newProject.save();
     
@@ -98,12 +98,14 @@ const uploadImage = async ({ file }) => {
     return { status: true, message: 'Image uploaded successfully', data: result };
 };
 
-const updateProject = async ({ id, auth, title, defaultImg, desc, file, status, isFavorite }) => {
+const updateProject = async ({   status, isFavorite ,id , title, location, file, desc, defaultImg  , bidDate , startDate , stage , buildingUse , value ,sector}) => {
     // if (!auth  || auth.role!=='ADMIN') {
     //     return { status: false, message: "Not Authorised" }
     // }
 
-    let updateObj = removeUndefined({ title, defaultImg, status, desc, isFavorite });
+  try{
+    let updateObj = removeUndefined({ title, defaultImg, status, desc, isFavorite , location , bidDate , startDate , stage , buildingUse ,value  , sector });
+     
 
     if (defaultImg !== '' && defaultImg !== 'undefined' && defaultImg) {
         updateObj['img'] = [];
@@ -116,6 +118,9 @@ const updateProject = async ({ id, auth, title, defaultImg, desc, file, status, 
     const updateProject = await Project.findByIdAndUpdate(id, { $set: updateObj }, { new: true });
 
     return { status: true, message: 'Project updated successfully', data: updateProject };
+  } catch(error){
+    console.log(error);
+  }
 };
 
 const updateProjectStatus = async ({ id, auth, status }) => {
