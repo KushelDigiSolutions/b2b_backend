@@ -1,0 +1,159 @@
+ js hero 
+ edabit   -->challanges with easy/medium/hard...
+jschallenger  -->do it
+sitepoint  -->interview raleted question with expaination
+teaching materials   -->do it 
+maxpou   -->interview related questions
+exercism -->difficult to use
+asmarterwaytolearn -->topic wise questions
+w3resource --> questions with practice
+dreamincode  -->list of project and ideas
+
+
+solve dsa problem gg
+
+https://practice.geeksforgeeks.org/explore?page=1&sortBy=submissions&utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+
+
+// tailwind set up
+npm install -D tailwindcss postcss autoprefixer vite
+npx tailwindcss init -p
+install extentetion -> tailwind css
+add * on content (inside tailwind config .js)
+add script in package json ( script => start->vite)
+create main.css and paste
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+// TO MIX TWO IMAGES SO THAT THEY CAN SEE DIFFERENT ->MIX BLEND-MULTIPLY-->ary two circle ko ek ke uper ek lagaya tha wo wala
+
+
+// DISCORD CLONE
+background-> #404eed color
+
+
+//ST0000022900 ---> password 07689725
+
+//discord love babbar -> https://discord.com/invite/8kzMGfe
+
+
+// fontawesome
+
+    <script src="https://kit.fontawesome.com/58a810656e.js" crossorigin="anonymous"></script>
+
+
+
+//angrytools gradient -->for gradient
+
+
+
+//google font 
+tittle ke neeche
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500&family=League+Gothic&family=Oswald:wght@200&family=Roboto:ital,wght@0,100;1,100&display=swap" rel="stylesheet">
+
+
+
+//REACT 
+official website -> reactjs.org
+
+//react setup
+step1 -> install node js
+step2-> vs code
+step 3-> create a new folder ->reactFolio
+step 4-> change directory to reactFolio
+step 5-> npx create-react-app demoshopapp
+step 6-> change directory to demoshopapp
+step 7-> npm start
+
+//--> https://github.com/thepranaygupta/react-tailwind-css-starter-pack   ===> react github wala
+
+
+// toastify ---> step1 -> install   ==> npm i react-toastify
+step2=> import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+
+//react icon ==> npm react icon
+step1-> npm i react-icons   ==> run on terminal
+step2==> import {icon names} from 'react-icons/fa';
+
+react icons ==> react-icons.github.io/react-icons/
+
+
+//for Loading icon ==> css loader generator
+
+
+//../assets/Logo.svg  ==> .. se uper jate hai
+
+
+//freecodecamp.org
+
+
+
+
+//npm i TagCloud
+
+
+C:\Program Files\MongoDB\Server\6.0\data\
+
+
+
+// name and password of database atlas 
+name => manishsinghrajwar80
+password -> 
+L7pyBNh2tvrRhK6m
+
+
+
+// this is email sending password -> by two step verification
+ygrdtpapeyxsmfhl
+
+
+//qwertyuiop!@12#$34  => twilio password
+
+// npm i howler -> to play the music in react
+
+
+// razorpay 
+key_id	key_secret
+rzp_test_kblu3MFr3QADeY	CFmN4j6sM0KkI7BRwrmhpMnJ
+
+
+// server idea -> create course mai differnt different state bna lo , draft state , pending , approval , publish state , or har course publish mai tabhi ja paega jab uske pass ek admin ka approval hoga .
+
+
+// const matchRoute = (route)=>{
+    return matchPath({path:route} , location.pathname);
+ }
+
+
+// just studynotion json 
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thepranaygupta/react-tailwind-css-starter-pack.git"
+  },
+   "author": "Pranay Gupta",
+   "bugs": {
+    "url": "https://github.com/thepranaygupta/react-tailwind-css-starter-pack/issues"
+  },
+
+
+
+
+https://bhojpuripink.com/categorylist/4831/all-indian-viral-video-download/default/1.html
+
+
+// user name : manishsinghrajwar30
+// password : BvBeEegJ7sxaAEfl
+// url mongodb+srv://manishsinghrajwar30:BvBeEegJ7sxaAEfl@cluster0.pqajyni.mongodb.net/ECommerceKhusel
+
+
+// flowbite -> tailwind framework prebuild 
+
+// roadmap with practice -> https://docs.google.com/spreadsheets/d/1xbz2hp_sB2r1nD_OPW4813XuCT0ZbRNucO39xEH5Hec/edit#gid=0
+
+
+
