@@ -302,11 +302,24 @@ const deleteUserImage = async ({id  ,userId}) =>{
     return { status: true, message: 'User image deleted successfully' ,data: ans };
 }
 
+const getUserByCategories = async({category})=>{
+
+try{
+
+    const users = await User.find({ categoryies: category }).exec();
+
+      return { status: true, message: 'Users retrieved successfully', data: users };
+
+} catch(error){
+    return { status: false, message: "Internal server error" };}
+}
+
 module.exports = {
     verify,
     getUsers,
     signin,
     login,
+    getUserByCategories ,
     updateUser,
     deleteUser,
     deleteUsers,

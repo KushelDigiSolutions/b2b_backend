@@ -1,5 +1,5 @@
 const express = require("express");
-const {verify,getUsers,signin,login,sendOtp,changePassword,submitOtp,resetPassword,deleteUsers,deleteUser,updateUser,deleteUserImage} = require("../controllers/userController");
+const {verify,getUsers,signin,login,sendOtp,getUserByCategories,changePassword,submitOtp,resetPassword,deleteUsers,deleteUser,updateUser,deleteUserImage} = require("../controllers/userController");
 const { upload } = require('../util/util');
 const auth = require('../middleware/auth');
 
@@ -106,6 +106,24 @@ router.delete('/deleteUserImage/:id/:userId', auth, async (req, res) => {
         res.status(400).json({ status: false, message: error.message });
     }
 });
+
+router.get("/getUserByCategory/:category" , async(req ,res)=>{
+    try{
+
+        let data = await getUserByCategories({category: req.params.category});
+
+        if(!data.status){
+            return res.status(400).json(data);
+        }
+
+        return res.json(data);
+
+
+    } catch(error){
+        console.log(error);
+        res.status(400).json({status :false , message:error.message})
+    }
+})
 
 module.exports = router;
 
