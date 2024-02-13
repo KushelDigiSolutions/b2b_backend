@@ -20,7 +20,7 @@ const mySchema = mongoose.Schema({
        type: String ,
     },
     sector: String ,
-    value: Number , 
+    Value: Number , 
     defaultImg: String,
     createdBy: Object,
     ts: String,

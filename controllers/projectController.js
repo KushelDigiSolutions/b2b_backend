@@ -2,86 +2,86 @@ const Project = require("../models/Project");
 const User = require("../models/User");
 const { removeUndefined, uploadToCloudinary } = require("../util/util");
 const cloudinary = require("cloudinary").v2;
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 const path = require("path");
 
 
- // let and = [];
+// let and = [];
 
-    // if (id && id !== "" && id !== "undefined") {
-    //     and.push({ _id: id });
-    // }
+// if (id && id !== "" && id !== "undefined") {
+//     and.push({ _id: id });
+// }
 
-    // if (query && query !== "" && query !== "undefined") {
-    //     console.log(query);
-    //     and.push({ title: { $regex: query, $options: "i" } });
-    // }
+// if (query && query !== "" && query !== "undefined") {
+//     console.log(query);
+//     and.push({ title: { $regex: query, $options: "i" } });
+// }
 
-    // if (and.length === 0) {
-    //     and.push({});
-    // }
-    // const count = await Project.count({ $and: and });
-    // let data;
+// if (and.length === 0) {
+//     and.push({});
+// }
+// const count = await Project.count({ $and: and });
+// let data;
 
-    // if (page && page !== "" && page !== "undefined") {
-    //     data = await Project.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
-    // }
-    
-    
-        // data = await Project.find({ $and: and });
+// if (page && page !== "" && page !== "undefined") {
+//     data = await Project.find({ $and: and }).skip((page - 1) * perPage).limit(perPage);
+// }
 
-const getProjects = async ({ id}) => {
-try{
-        
-    const data = await User.findById(id).populate("project").exec();
 
-        return { status: true, data};
-} catch(error){
-    console.log("error" ,error);
-}
+// data = await Project.find({ $and: and });
+
+const getProjects = async ({ id }) => {
+    try {
+
+        const data = await User.findById(id).populate("project").exec();
+        console.log(data);
+        return { status: true, data };
+    } catch (error) {
+        console.log("error", error);
+    }
 };
 
-const getProjects1 = async () =>{
+const getProjects1 = async () => {
     const data = await Project.find();
-    return {status:true, data}
+    return { status: true, data }
 }
 
-const postProject = async ({id , title, location, file, desc, defaultImg, auth  , bidDate , startDate , stage , buildingUse , Value ,sector }) => {
+const postProject = async ({ id, title, location, file, desc, defaultImg, auth, bidDate, startDate, stage, buildingUse, Value, sector }) => {
     // if(!auth || auth.role!=='ADMIN')
     // {
     //     return { status: false, message: "Not Authorised" };
     // }
-    try{
+    try {
 
-    
+
         if (defaultImg || defaultImg === "true") {
 
             const newProject = new Project({
-                title, defaultImg, img: [], desc ,bidDate , startDate , stage , buildingUse , value:Value , sector , location, ts: new Date().getTime(), status: true, createdBy: auth
+                title, defaultImg, img: [], desc, bidDate, startDate, stage, buildingUse, Value, sector, location, ts: new Date().getTime(), status: true, createdBy: auth
             });
             const saveProject = await newProject.save();
-    
+
             // Update user's project field with the new project's ID
             await User.findByIdAndUpdate(id, { $push: { project: saveProject._id } });
-    
+
             return { status: true, message: 'New Project created', data: saveProject };
         }
         else {
             const newProject = new Project({
-                title, defaultImg, img: file, desc, bidDate , startDate , stage , buildingUse , value:Value , sector , location, ts: new Date().getTime(), status: true, createdBy: auth
+                title, defaultImg, img: file, desc, bidDate, startDate, stage, buildingUse, Value, sector, location, ts: new Date().getTime(), status: true, createdBy: auth
             });
             const saveProject = await newProject.save();
-    
+
             // Update user's project field with the new project's ID
             await User.findByIdAndUpdate(id, { $push: { project: saveProject._id } });
-    
+
             return { status: true, message: 'New Project created', data: saveProject };
         }
-    } catch(error){
+    } catch (error) {
         console.log(error);
         return {
-            status:false , 
-            message:"500"
+            status: false,
+            message: "500"
         }
     }
 };
@@ -89,10 +89,10 @@ const postProject = async ({id , title, location, file, desc, defaultImg, auth  
 
 function getFileType(filePath) {
     // Extract the file extension
-    console.log("filpath" ,filePath);
+    console.log("filpath", filePath);
     const extension = path.extname(filePath).toLowerCase();
 
-    console.log("extension" ,extension);
+    console.log("extension", extension);
 
     // Map common file extensions to MIME types
     const extensionToType = {
@@ -119,45 +119,45 @@ const uploadImage = async ({ file }) => {
         var locaFilePath = i.path;
         var fileType = getFileType(locaFilePath);
 
-        if(fileType === null){
+        if (fileType === null) {
             var uploadResult = await uploadToCloudinary(locaFilePath);
-            const {message ,  Success,    public_id} = uploadResult;
-            result.push({ fileName: i.originalname , public_id , Success , message });
+            const { message, Success, public_id } = uploadResult;
+            result.push({ fileName: i.originalname, public_id, Success, message });
         }
-        
+
         else {
             var uploadResult = await uploadToCloudinary(locaFilePath);
             result.push(uploadResult);
-        } 
+        }
     }
 
     return { status: true, message: 'Upload completed', data: result };
 };
 
 
-const updateProject = async ({   status, isFavorite ,id , title, location, file, desc, defaultImg  , bidDate , startDate , stage , buildingUse , value ,sector}) => {
+const updateProject = async ({ status, isFavorite, id, title, location, file, desc, defaultImg, bidDate, startDate, stage, buildingUse, Value, sector }) => {
     // if (!auth  || auth.role!=='ADMIN') {
     //     return { status: false, message: "Not Authorised" }
     // }
 
-  try{
-    let updateObj = removeUndefined({ title, defaultImg, status, desc, isFavorite , location , bidDate , startDate , stage , buildingUse ,value  , sector });
-     
+    try {
+        let updateObj = removeUndefined({ title, defaultImg, status, desc, isFavorite, location, bidDate, startDate, stage, buildingUse, Value, sector });
 
-    if (defaultImg !== '' && defaultImg !== 'undefined' && defaultImg) {
-        updateObj['img'] = [];
+
+        if (defaultImg !== '' && defaultImg !== 'undefined' && defaultImg) {
+            updateObj['img'] = [];
+        }
+
+        if (file !== '' && file !== undefined && file !== null) {
+            updateObj['img'] = file;
+        }
+
+        const updateProject = await Project.findByIdAndUpdate(id, { $set: updateObj }, { new: true });
+
+        return { status: true, message: 'Project updated successfully', data: updateProject };
+    } catch (error) {
+        console.log(error);
     }
-
-    if (file !== '' && file !== undefined && file !== null) {
-        updateObj['img'] = file;
-    }
-
-    const updateProject = await Project.findByIdAndUpdate(id, { $set: updateObj }, { new: true });
-
-    return { status: true, message: 'Project updated successfully', data: updateProject };
-  } catch(error){
-    console.log(error);
-  }
 };
 
 const updateProjectStatus = async ({ id, auth, status }) => {
