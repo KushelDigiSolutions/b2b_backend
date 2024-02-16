@@ -41,7 +41,8 @@ const getProjects = async ({ id }) => {
     }
 };
 
-const getProjects1 = async () => {
+const getProjects1 = async (id) => {
+    // let and = []
     const data = await Project.find();
     return { status: true, data }
 }
@@ -96,7 +97,7 @@ function getFileType(filePath) {
 
     // Map common file extensions to MIME types
     const extensionToType = {
-        '.jpg': 'image/jpeg',
+        '.jpg': 'image/jpg',
         '.jpeg': 'image/jpeg',
         '.png': 'image/png',
         '.gif': 'image/gif',
